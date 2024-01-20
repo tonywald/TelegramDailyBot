@@ -140,11 +140,11 @@ public class UserService {
     public String generateUserListMessage(Long chatId, List<String> fieldsToDisplay, Map<String, String> customHeaders) {
         List<User> users = findByChatid(chatId);
         if (users.isEmpty()) {
-            return "Участники розыгрышей в этом чате отсутствуют";
+            return "There are no participants in this chat";
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append("Участники розыгрышей в этом чате:\n");
+        sb.append("Participants in the drawings in this chat:\n");
 
         // Add headers row
         for (String field : fieldsToDisplay) {

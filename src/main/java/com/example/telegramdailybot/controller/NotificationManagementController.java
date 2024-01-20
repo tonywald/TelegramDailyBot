@@ -31,10 +31,10 @@ public class NotificationManagementController {
     public SendMessage showNotifications(Update update) {
         List<String> fieldsToDisplay = Arrays.asList("text", "datetime", "repetition", "datetimexcluded");
         Map<String, String> customHeaders = new HashMap<>();
-        customHeaders.put("text", "Текст уведомления: ");
-        customHeaders.put("datetime", "Дата и время: ");
-        customHeaders.put("repetition", "Частота: ");
-        customHeaders.put("datetimexcluded", "Исключения: \n");
+        customHeaders.put("text", "Notification text: ");
+        customHeaders.put("datetime", "Date and time: ");
+        customHeaders.put("repetition", "Frequency: ");
+        customHeaders.put("datetimexcluded", "Exceptions: \n");
         SendMessage message = new SendMessage();
         message.setChatId(update.getMessage().getChatId());
         message.setText(notificationService.generateNotificationListMessage(update.getMessage().getChatId(), fieldsToDisplay, customHeaders));
@@ -49,18 +49,18 @@ public class NotificationManagementController {
             userActionStates.put(chatId, UserActionState.WAITING_FOR_CHAT_ID_TO_EDIT_NOTIFICATIONS);
             SendMessage message = new SendMessage();
             message.setChatId(chatId);
-            message.setText("Введите ID чата для редактирования уведомлений:");
+            message.setText("Enter chat ID to edit notifications:");
             return message;
         } else {
             List<String> fieldsToDisplay = Arrays.asList("id", "text", "datetime", "repetition", "datetimexcluded");
             Map<String, String> customHeaders = new HashMap<>();
             customHeaders.put("id", "ID: ");
-            customHeaders.put("text", "Текст уведомления: ");
-            customHeaders.put("datetime", "Дата и время: ");
-            customHeaders.put("repetition", "Частота: ");
-            customHeaders.put("datetimexcluded", "Исключения: \n");
+            customHeaders.put("text", "Notification text: ");
+            customHeaders.put("datetime", "Date and time: ");
+            customHeaders.put("repetition", "Frequency: ");
+            customHeaders.put("datetimexcluded", "Exceptions: \n");
             String text = notificationService.generateNotificationListMessage(chatId, fieldsToDisplay, customHeaders);
-            text = text + "\n Выберите действие:";
+            text = text + "\n Choose an action:";
 
             // Create an inline keyboard markup for editing Notifications.
             InlineKeyboardMarkup inlineKeyboardMarkup = BotUtils.createInlineKeyboardMarkup("add_notification", "delete_notifications", "edit_notification");
@@ -98,7 +98,7 @@ public class NotificationManagementController {
 
         SendMessage message = new SendMessage();
         message.setChatId(chatId);
-        message.setText("Уведомления успешно удалены");
+        message.setText("Notifications successfully deleted");
         return message;
     }
 
@@ -128,12 +128,12 @@ public class NotificationManagementController {
             List<String> fieldsToDisplay = Arrays.asList("id", "text", "datetime", "repetition", "datetimexcluded");
             Map<String, String> customHeaders = new HashMap<>();
             customHeaders.put("id", "ID: ");
-            customHeaders.put("text", "Текст уведомления: ");
-            customHeaders.put("datetime", "Дата и время: ");
-            customHeaders.put("repetition", "Частота: ");
-            customHeaders.put("datetimexcluded", "Исключения: \n");
+            customHeaders.put("text", "Notification text: ");
+            customHeaders.put("datetime", "Date and time: ");
+            customHeaders.put("repetition", "Frequency: ");
+            customHeaders.put("datetimexcluded", "Exceptions: \n");
             String text = notificationService.generateNotificationListMessage(targetChatId, fieldsToDisplay, customHeaders);
-            text = text + "\n Выберите действие:";
+            text = text + "\n Choose an action:";
 
             // Create an inline keyboard markup for editing Notifications.
             InlineKeyboardMarkup inlineKeyboardMarkup = BotUtils.createInlineKeyboardMarkup("add_notification", "delete_notifications", "edit_notification");
@@ -146,7 +146,7 @@ public class NotificationManagementController {
         } catch (NumberFormatException e) {
             SendMessage message = new SendMessage();
             message.setChatId(chatId);
-            message.setText("Неверный формат ID чата. Введите корректный ID чата:");
+            message.setText("Chat ID format is incorrect. Enter the correct chat ID:");
             return message;
         }
     }
@@ -168,7 +168,7 @@ public class NotificationManagementController {
         } catch (NumberFormatException e) {
             SendMessage message = new SendMessage();
             message.setChatId(update.getMessage().getChatId());
-            message.setText("Неверный формат ID чата. Введите корректный ID чата:");
+            message.setText("Chat ID format is incorrect. Enter the correct chat ID:");
             return message;
         }
     }
@@ -179,15 +179,15 @@ public class NotificationManagementController {
         if (isUserChat && isAdmin) {
             userActionStates.put(update.getCallbackQuery().getFrom().getId(), UserActionState.WAITING_FOR_CHAT_ID_TO_ADD_NOTIFICATION);
             String text = """
-                    Первой строкой вышлите ID чата, в который хотите добавить уведомления. Далее пришлите уведомление согласно следующему шаблону. Для удобства шаблон можно скопировать, вставить и отредактировать
+                    In the first line, send the ID of the chat to which you want to add notifications. Next, send a notification according to the following template. For convenience, the template can be copied, pasted and edited.
                                     
                     -1234567890
-                    Текст уведомления: Все на дейли, сегодня шарит @name, @username!
-                    Дата и время: 2023-04-06T14:00
-                    Частота: {once|minutely|hourly|daily|weekly|monthly|yearly}
-                    Исключения:
-                      - Исключить СБ и ВС
-                      - Исключить дни:
+                    Notification text: Everything is on daily, today it’s fumbling @name, @username!
+                    Date and time: 2023-04-06T14:00
+                    Frequency: {once|minutely|hourly|daily|weekly|monthly|yearly}
+                    Exceptions:
+                      - Exclude Sat and Sun
+                      - Exclude days:
                         * 2023-04-12 (every 7 days)
                         * 2023-04-24 (every 21 days)
                         * 2023-04-07 (every 7 days)""";
@@ -199,18 +199,18 @@ public class NotificationManagementController {
             userActionStates.put(update.getCallbackQuery().getFrom().getId(), UserActionState.WAITING_FOR_NOTIFICATION_TO_ADD);
 
             String text = """
-                    Пожалуйста, пришлите уведомление согласно следующему шаблону. Для удобства шаблон можно скопировать, вставить и отредактировать
-
-                    Текст уведомления: Все на дейли, сегодня шарит @name, @username!
-                    Дата и время: 2023-04-06T14:00
-                    Частота: {once|minutely|hourly|daily|weekly|monthly|yearly}
-                    Исключения:
-                      - Исключить СБ и ВС
-                      - Исключить дни:
+                    In the first line, send the ID of the chat to which you want to add notifications. Next, send a notification according to the following template. For convenience, the template can be copied, pasted and edited.
+                    
+                    -1234567890
+                    Notification text: Everything is on daily, today it’s fumbling @name, @username!
+                    Date and time: 2023-04-06T14:00
+                    Frequency: {once|minutely|hourly|daily|weekly|monthly|yearly}
+                    Exceptions:
+                      - Exclude Sat and Sun
+                      - Exclude days:
                         * 2023-04-12 (every 7 days)
                         * 2023-04-24 (every 21 days)
                         * 2023-04-07 (every 7 days)""";
-
             SendMessage message = new SendMessage();
             message.setChatId(update.getCallbackQuery().getMessage().getChatId());
             message.setText(text);
@@ -221,7 +221,7 @@ public class NotificationManagementController {
     public SendMessage initiateDeleteNotificationsProcess(Update update, Map<Long, UserActionState> userActionStates) {
         userActionStates.put(update.getCallbackQuery().getFrom().getId(), UserActionState.WAITING_FOR_NOTIFICATION_TO_DELETE);
         String text = """
-                Пожалуйста, вышлите ID уведомлений, которые вы хотите удалить, каждый ID с новой строчки. Например:
+                Please send the IDs of the notifications you want to delete, each ID on a new line. For example:
 
                 10
                 11
@@ -235,15 +235,15 @@ public class NotificationManagementController {
     public SendMessage initiateEditNotificationProcess(Update update, Map<Long, UserActionState> userActionStates) {
         userActionStates.put(update.getCallbackQuery().getFrom().getId(), UserActionState.WAITING_FOR_NOTIFICATION_TO_EDIT);
         String text = """
-                Пожалуйста, пришлите измененное уведомление согласно следующему шаблону. Для удобства скопируйте предыдущую версию уведомления и измените ее
+                Please send the amended notice according to the following template. For convenience, copy the previous version of the notice and change it
                                 
                 ID: 11
-                Текст уведомления: Все на дейли, сегодня шарит @name, @username!
-                Дата и время: 2023-04-06T14:00
-                Частота: {once|minutely|hourly|daily|weekly|monthly|yearly}
-                Исключения:
-                  - Исключить СБ и ВС
-                  - Исключить дни:
+                Notification text: Everything is on daily, today it’s fumbling @name, @username!
+                Date and time: 2023-04-06T14:00
+                Frequency: {once|minutely|hourly|daily|weekly|monthly|yearly}
+                Exceptions:
+                  - Exclude Sat and Sun
+                  - Exclude days:
                     * 2023-04-12 (every 7 days)
                     * 2023-04-24 (every 21 days)
                     * 2023-04-07 (every 7 days)""";

@@ -75,7 +75,7 @@ public class NotificationSchedulerService {
                                 text = text.replace("@name", winner.getName());
                                 text = text.replace("@username", "@" + winner.getUsername());
                             } else {
-                                text = "Участники для розыгрыша в этом чате отсутствуют";
+                                text = "There are no participants for the drawing in this chat";
                             }
                         }
                         sendChatMessage(chat.getTelegramchatid(), text);

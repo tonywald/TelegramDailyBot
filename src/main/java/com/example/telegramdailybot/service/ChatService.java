@@ -95,7 +95,7 @@ public class ChatService {
 
     public String generateChatList() {
         List<Chat> chats = findAll();
-        StringBuilder sb = new StringBuilder("Список чатов:\n\n");
+        StringBuilder sb = new StringBuilder("Chat list:\n\n");
         for (Chat chat : chats) {
             sb.append(chat.getTelegramchatid()).append(", ")
                     .append(chat.getName()).append(", ").append(chat.getRole()).append('\n');

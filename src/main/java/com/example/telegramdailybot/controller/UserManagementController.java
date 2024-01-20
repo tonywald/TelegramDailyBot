@@ -33,15 +33,15 @@ public class UserManagementController {
         userService.resetWinners(update.getMessage().getChatId());
         SendMessage message = new SendMessage();
         message.setChatId(update.getMessage().getChatId());
-        message.setText("Победители сброшены!");
+        message.setText("Winners reset!");
         return message;
     }
 
     public SendMessage showUsers(Update update) {
         List<String> fieldsToDisplay = Arrays.asList("name", "username", "haswon");
         Map<String, String> customHeaders = new HashMap<>();
-        customHeaders.put("name", "имя");
-        customHeaders.put("haswon", "выиграл");
+        customHeaders.put("name", "Name");
+        customHeaders.put("haswon", "Won");
         SendMessage message = new SendMessage();
         message.setChatId(update.getMessage().getChatId());
         message.setText(userService.generateUserListMessage(update.getMessage().getChatId(), fieldsToDisplay, customHeaders));
@@ -54,8 +54,8 @@ public class UserManagementController {
         String text;
 
         if (winner != null) {
-            text = "Участник " + winner.getName() + ", @" + winner.getUsername() + " выиграл!";
-        } else text = "Участники для розыгрыша в этом чате отсутствуют";
+            text = "Entrant " + winner.getName() + ", @" + winner.getUsername() + " won!";
+        } else text = "There are no participants for the drawing in this chat";
 
         SendMessage message = new SendMessage();
         message.setChatId(update.getMessage().getChatId());
@@ -76,15 +76,15 @@ public class UserManagementController {
             userActionStates.put(chatId, UserActionState.WAITING_FOR_CHAT_ID_TO_EDIT_USERS);
             SendMessage message = new SendMessage();
             message.setChatId(chatId);
-            message.setText("Введите ID чата для редактирования пользователей:");
+            message.setText("Enter chat ID to edit users:");
             return message;
         } else {
             List<String> fieldsToDisplay = Arrays.asList("id", "name", "username", "haswon");
             Map<String, String> customHeaders = new HashMap<>();
-            customHeaders.put("name", "имя");
-            customHeaders.put("haswon", "выиграл");
+            customHeaders.put("name", "Name");
+            customHeaders.put("haswon", "Won");
             String text = userService.generateUserListMessage(chatId, fieldsToDisplay, customHeaders);
-            text = text + "\n Выберите действие:";
+            text = text + "\n Choose an action:";
             InlineKeyboardMarkup inlineKeyboardMarkup = BotUtils.createInlineKeyboardMarkup("add_users", "delete_users", "edit_users");
 
             SendMessage message = new SendMessage();
@@ -107,7 +107,7 @@ public class UserManagementController {
         // Send a confirmation message to the user
         SendMessage message = new SendMessage();
         message.setChatId(update.getMessage().getChatId());
-        message.setText("Участники успешно добавлены");
+        message.setText("Participants added successfully");
 
         return message;
     }
@@ -125,7 +125,7 @@ public class UserManagementController {
         // Send a confirmation message to the user
         SendMessage message = new SendMessage();
         message.setChatId(chatId);
-        message.setText("Участники успешно удалены");
+        message.setText("Members successfully deleted");
 
         return message;
     }
@@ -143,7 +143,7 @@ public class UserManagementController {
         // Send a confirmation message to the user
         SendMessage message = new SendMessage();
         message.setChatId(chatId);
-        message.setText("Участники успешно отредактированы");
+        message.setText("Members successfully edited");
 
         return message;
     }
@@ -158,10 +158,10 @@ public class UserManagementController {
 
             List<String> fieldsToDisplay = Arrays.asList("id", "name", "username", "haswon");
             Map<String, String> customHeaders = new HashMap<>();
-            customHeaders.put("name", "имя");
-            customHeaders.put("haswon", "выиграл");
+            customHeaders.put("name", "Name");
+            customHeaders.put("haswon", "Won");
             String text = userService.generateUserListMessage(targetChatId, fieldsToDisplay, customHeaders);
-            text = text + "\n Выберите действие:";
+            text = text + "\n Choose an action:";
             InlineKeyboardMarkup inlineKeyboardMarkup = BotUtils.createInlineKeyboardMarkup("add_users", "delete_users", "edit_users");
 
             SendMessage message = new SendMessage();
@@ -173,7 +173,7 @@ public class UserManagementController {
         } catch (NumberFormatException e) {
             SendMessage message = new SendMessage();
             message.setChatId(chatId);
-            message.setText("Неверный формат ID чата. Введите корректный ID чата:");
+            message.setText("Chat ID format is incorrect. Enter the correct chat ID:");
             return message;
         }
     }
@@ -193,13 +193,13 @@ public class UserManagementController {
             // Send a confirmation message to the user
             SendMessage message = new SendMessage();
             message.setChatId(update.getMessage().getChatId());
-            message.setText("Участники успешно добавлены");
+            message.setText("Participants added successfully");
 
             return message;
         } catch (NumberFormatException e) {
             SendMessage message = new SendMessage();
             message.setChatId(update.getMessage().getChatId());
-            message.setText("Неверный формат ID чата. Введите корректный ID чата:");
+            message.setText("Chat ID format is incorrect. Enter the correct chat ID:");
             return message;
         }
     }
@@ -210,12 +210,12 @@ public class UserManagementController {
         if (isUserChat && isAdmin) {
             userActionStates.put(update.getCallbackQuery().getFrom().getId(), UserActionState.WAITING_FOR_CHAT_ID_TO_ADD_USERS);
             String text = """
-                    Первой строкой вышлите ID чата, в который хотите добавить участников. Далее с новых строчек вышлите через запятую: имя, @username. Например:
+                    In the first line, send the ID of the chat to which you want to add participants. Next, send from new lines, separated by commas: name, @username. For example:
                                         
                     -123456789
-                    Вася,@vasyatelegram
-                    Петя,@evilusername
-                    Эвелина,@evacool""";
+                    Vasya,@vasyatelegram
+                    Petya,@evilusername
+                    Evelina,@evacool""";
             SendMessage message = new SendMessage();
             message.setChatId(update.getCallbackQuery().getMessage().getChatId());
             message.setText(text);
@@ -223,11 +223,11 @@ public class UserManagementController {
         } else {
             userActionStates.put(update.getCallbackQuery().getFrom().getId(), UserActionState.WAITING_FOR_USERS_TO_ADD);
             String text = """
-                    Пожалуйста, вышлите через запятую: имя, @username. Например:
+                    Please send, separated by commas: name, @username. For example:
 
-                    Вася,@vasyatelegram
-                    Петя,@evilusername
-                    Эвелина,@evacool""";
+                    Vasya,@vasyatelegram
+                    Petya,@evilusername
+                    Evelina,@evacool""";
             SendMessage message = new SendMessage();
             message.setChatId(update.getCallbackQuery().getMessage().getChatId());
             message.setText(text);
@@ -238,7 +238,7 @@ public class UserManagementController {
     public SendMessage initiateDeleteUsersProcess(Update update, Map<Long, UserActionState> userActionStates) {
         userActionStates.put(update.getCallbackQuery().getFrom().getId(), UserActionState.WAITING_FOR_USERS_TO_DELETE);
         String text = """
-                Пожалуйста, вышлите ID участников, которых вы хотите удалить, каждый ID с новой строчки. Например:
+                Please send the IDs of the members you want to remove, each ID on a new line. For example:
 
                 10
                 11
@@ -252,11 +252,11 @@ public class UserManagementController {
     public SendMessage initiateEditUsersProcess(Update update, Map<Long, UserActionState> userActionStates) {
         userActionStates.put(update.getCallbackQuery().getFrom().getId(), UserActionState.WAITING_FOR_USERS_TO_EDIT);
         String text = """
-                Пожалуйста, вышлите через запятую: ID участника, которого вы хотите изменить, имя, username. Например:
+                Please send, separated by commas: ID of the participant you want to change, name, username. For example:
 
-                10,Вася,vasyatelegram
-                11,Петя,evilusername
-                12,Эвелина,evacool""";
+                10,Vasya,vasyatelegram
+                11,Petya,evilusername
+                12,Evelina,evacool""";
         SendMessage message = new SendMessage();
         message.setChatId(update.getCallbackQuery().getMessage().getChatId());
         message.setText(text);

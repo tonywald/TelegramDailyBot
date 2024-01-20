@@ -38,7 +38,7 @@ public class NotificationService {
         ParseResult parseResult = BotUtils.parseNotificationText(text, telegramDailyBotProperties.getTimeZone());
         if (parseResult.hasError()) {
             // Send an error message if the text could not be parsed
-            return "Ошибка при добавлении уведомления. " + parseResult.getErrorMessage();
+            return "Error adding notification. " + parseResult.getErrorMessage();
         }
         Notification notification = parseResult.getNotification();
         // Set the chat ID
@@ -47,7 +47,7 @@ public class NotificationService {
         // Save the notification
         save(notification);
 
-        return "Уведомление успешно добавлено";
+        return "Notification added successfully";
     }
 
     @Transactional
@@ -82,7 +82,7 @@ public class NotificationService {
             ParseResult parseResult = BotUtils.parseNotificationText(text, telegramDailyBotProperties.getTimeZone());
             if (parseResult.hasError()) {
                 // Send an error message if the text could not be parsed
-                return "Ошибка при редактировании уведомления. " + parseResult.getErrorMessage();
+                return "Error editing notification. " + parseResult.getErrorMessage();
             }
             Notification notificationUpdated = parseResult.getNotification();
 
@@ -98,9 +98,9 @@ public class NotificationService {
                     save(notificationCurrent);
                 }
             }
-            return "Уведомление успешно отредактировано";
+            return "Notification successfully edited";
         } catch (NumberFormatException e) {
-            return "Ошибка при парсинге ID. Пожалуйста, проверьте формат и попробуйте еще раз.";
+            return "Error parsing ID. Please check the format and try again.";
         }
     }
 
@@ -131,11 +131,11 @@ public class NotificationService {
     public String generateNotificationListMessage(Long chatId, List<String> fieldsToDisplay, Map<String, String> customHeaders) {
         List<Notification> notifications = findByChatid(chatId);
         if (notifications.isEmpty()) {
-            return "Уведомления для этого чата отсутствуют";
+            return "There are no notifications for this chat";
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append("Уведомления для этого чата: \n\n");
+        sb.append("Notifications for this chat: \n\n");
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 
@@ -167,11 +167,11 @@ public class NotificationService {
                             String customHeader = customHeaders.getOrDefault(field, field);
                             sb.append(customHeader);
                             if (notification.getDatetimexcluded().get("weekends").asBoolean()) {
-                                sb.append("  - Исключить СБ и ВС\n");
+                                sb.append("  - Exclude Sat and Sun\n");
                             }
                             ArrayNode skipDays = (ArrayNode) notification.getDatetimexcluded().get("skip_days");
                             if (skipDays != null) {
-                                sb.append("  - Исключить дни: \n");
+                                sb.append("  - Exclude days: \n");
                                 for (JsonNode skipDay : skipDays) {
                                     int frequency = skipDay.get("frequency").asInt();
                                     String dayStr = skipDay.get("day").asText();

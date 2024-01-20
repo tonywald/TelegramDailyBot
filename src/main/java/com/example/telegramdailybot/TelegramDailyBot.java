@@ -72,7 +72,7 @@ public class TelegramDailyBot extends TelegramLongPollingBot {
         Long chatId = update.getMessage().getChatId();
 
         if (!chatManagementController.existsById(chatId) && !"/start".equalsIgnoreCase(command) && !"/getchatid".equalsIgnoreCase(command)) {
-            sendChatMessage(chatId, "Вы не зарегистрированы в боте!");
+            sendChatMessage(chatId, "You are not authorized to use this bot.");
             return;
         }
 
@@ -88,7 +88,7 @@ public class TelegramDailyBot extends TelegramLongPollingBot {
                     sendChatMessage(notificationManagementController.editNotificationsMessage(update, userActionStates));
             case "/editchats" -> sendChatMessage(chatManagementController.editChatsMessage(update));
             case "/askchatgpt3" -> askChatGPT3(update.getMessage(), chatId);
-            default -> sendChatMessage(chatId, "Неизвестная команда!");
+            default -> sendChatMessage(chatId, "Unknown command. Please use /start or /getchatid to get started.");
         }
     }
 
@@ -102,7 +102,7 @@ public class TelegramDailyBot extends TelegramLongPollingBot {
         if (userActionState == null) {
             logger.warn("UserActionState is null for user: {}", userId);
             // You can either return here or set a default value for userActionState
-            sendChatMessage(chatId, "Сначала выберите команду из списка");
+            sendChatMessage(chatId, "First, select an option from the menu.(?)");
             return;
         }
 
@@ -126,7 +126,7 @@ public class TelegramDailyBot extends TelegramLongPollingBot {
             case WAITING_FOR_CHATS_TO_EDIT ->
                     sendChatMessage(chatManagementController.editChats(update, userActionStates));
             case WAITING_FOR_CHATGPT3_QUERY -> {
-                sendChatMessage(chatId, "Подождите, пожалуйста, ChatGPT пишет ответ...");
+                sendChatMessage(chatId, "Please wait, ChatGPT3 is processing your query...");
                 // Remove the user from the userAddingStates map
                 userActionStates.remove(userId);
                 chatGpt3Service.chat(text).thenAcceptAsync(responseText -> sendChatMessage(chatId, responseText));
@@ -179,22 +179,22 @@ public class TelegramDailyBot extends TelegramLongPollingBot {
 
     private void handleStartCommand(Long chatId) {
         String welcomeMessage = """
-                🎉 Добро пожаловать в DailyBot2.0! 🤖
+                🎉 Welcome to AdminNotifier Bot 2.0! 🤖
 
-                🌟 Ваш личный помощник для организации ежедневных задач и оповещений в Телеграм-чате! 📅
+                🌟 The fastest way to find an admin.. for now. 📅
 
-                🚀 Что мы можем сделать вместе:
-                1️⃣ Лотерея пользователей: выбирайте победителей и добавляйте новых участников 🏆
-                2️⃣ Персонализированные уведомления: создавайте и редактируйте напоминания 🔔
-                3️⃣ Умные ответы с ChatGPT: задавайте вопросы и получайте развернутые ответы 🧠💬
+                🚀 What can we do together:
+                1️⃣ User lottery: choose winners and add new participants 🏆
+                2️⃣ Personalized notifications: create and edit reminders 🔔
+                3️⃣ Smart answers with ChatGPT: ask questions and get detailed answers 🧠💬
 
-                🤩 Приятного использования! Вместе мы сделаем ваш чат продуктивнее и веселее! 🎯""";
+                🤩 Enjoy using it! Together we will make your chat more productive and fun! 🎯""";
 
         sendChatMessage(chatId, welcomeMessage);
     }
 
     private void handleGetChatIdCommand(Long chatId) {
-        sendChatMessage(chatId, "ID вашего чата: " + chatId);
+        sendChatMessage(chatId, "Your chat ID: " + chatId);
     }
 
     private void askChatGPT3(Message message, Long chatId) {
@@ -203,7 +203,7 @@ public class TelegramDailyBot extends TelegramLongPollingBot {
 
         userActionStates.put(userId, UserActionState.WAITING_FOR_CHATGPT3_QUERY);
 
-        sendChatMessage(chatId, "Напишите свой вопрос ChatGPT3");
+        sendChatMessage(chatId, "Write your question to ChatGPT3");
     }
 
 

@@ -38,13 +38,13 @@ public class ChatManagementController {
             } else {
                 SendMessage message = new SendMessage();
                 message.setChatId(chatId);
-                message.setText("У вас нет прав администратора для редактирования чата!");
+                message.setText("You do not have administrator rights to edit chat!");
                 return message;
             }
         } else {
             SendMessage message = new SendMessage();
             message.setChatId(chatId);
-            message.setText("Команда /editchats доступна только в приватных чатах!");
+            message.setText("The /editchats command is only available in private chats.");
             return message;
         }
     }
@@ -60,7 +60,7 @@ public class ChatManagementController {
         // Send a confirmation message to the user
         SendMessage message = new SendMessage();
         message.setChatId(update.getMessage().getChatId());
-        message.setText("Чаты успешно добавлены");
+        message.setText("Chats added successfully");
 
         return message;
     }
@@ -75,7 +75,7 @@ public class ChatManagementController {
         // Send a confirmation message to the user
         SendMessage message = new SendMessage();
         message.setChatId(update.getMessage().getChatId());
-        message.setText("Чаты успешно удалены");
+        message.setText("Chats successfully deleted");
 
         return message;
     }
@@ -90,7 +90,7 @@ public class ChatManagementController {
         // Send a confirmation message to the user
         SendMessage message = new SendMessage();
         message.setChatId(update.getMessage().getChatId());
-        message.setText("Чаты успешно отредактированы");
+        message.setText("Chats successfully edited");
 
         return message;
     }
@@ -98,11 +98,11 @@ public class ChatManagementController {
     public SendMessage initiateAddChatsProcess(Update update, Map<Long, UserActionState> userActionStates) {
         userActionStates.put(update.getCallbackQuery().getFrom().getId(), UserActionState.WAITING_FOR_CHATS_TO_ADD);
         String text = """
-                Пожалуйста, вышлите через запятую: ID, название чата, роль. Например:
+                Please send, separated by commas: ID, chat name, role. For example:
 
-                12345678, Чат команды1, admin
-                12345678, Чат команды2, user
-                12345678, Иван Иванов, admin""";
+                12345678, Team chat1, admin
+                12345678, Team chat2, user
+                12345678, John Doe, admin""";
         SendMessage message = new SendMessage();
         message.setChatId(update.getCallbackQuery().getMessage().getChatId());
         message.setText(text);
@@ -112,7 +112,7 @@ public class ChatManagementController {
     public SendMessage initiateDeleteChatsProcess(Update update, Map<Long, UserActionState> userActionStates) {
         userActionStates.put(update.getCallbackQuery().getFrom().getId(), UserActionState.WAITING_FOR_CHATS_TO_DELETE);
         String text = """
-                Пожалуйста, вышлите ID чатов, которых вы хотите удалить, каждый ID с новой строчки. Например:
+                Please send the IDs of the chats you want to delete, each ID on a new line. For example:
 
                 10
                 11
@@ -126,11 +126,11 @@ public class ChatManagementController {
     public SendMessage initiateEditChatsProcess(Update update, Map<Long, UserActionState> userActionStates) {
         userActionStates.put(update.getCallbackQuery().getFrom().getId(), UserActionState.WAITING_FOR_CHATS_TO_EDIT);
         String text = """
-                Пожалуйста, вышлите через запятую: ID чата, который вы хотите изменить, название, роль. Например:
+                Please send, separated by commas: ID of the chat you want to change, name, role. For example:
 
-                10,Scrum команда1,
-                11,Петя,admin
-                12,Scrum команда2,""";
+                10,Scrum Team1,
+                11,Petya,admin
+                12,Scrum Team2,""";
         SendMessage message = new SendMessage();
         message.setChatId(update.getCallbackQuery().getMessage().getChatId());
         message.setText(text);

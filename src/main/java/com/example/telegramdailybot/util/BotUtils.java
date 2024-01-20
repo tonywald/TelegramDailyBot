@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 public class BotUtils {
 
     public static ParseResult parseNotificationText(String text, ZoneId timeZone) {
-        Pattern notificationPattern = Pattern.compile("Текст уведомления:\\s?(.+?)\\nДата и время:\\s?(.+?)\\nЧастота:\\s?(.+?)\\nИсключения:(.*)", Pattern.DOTALL);
+        Pattern notificationPattern = Pattern.compile("Notification text:\\s?(.+?)\\nDate and time:\\s?(.+?)\\nFrequency:\\s?(.+?)\\nExceptions:(.*)", Pattern.DOTALL);
         Matcher matcher = notificationPattern.matcher(text);
         if (matcher.find()) {
             String notificationText = matcher.group(1).trim();
@@ -33,14 +33,14 @@ public class BotUtils {
             try {
                 localDateTime = LocalDateTime.parse(dateTimeStr, dateTimeFormatter);
             } catch (DateTimeParseException e) {
-                return new ParseResult(null, "Ошибка при парсинге даты и времени: " + dateTimeStr);
+                return new ParseResult(null, "Error parsing date and time: " + dateTimeStr);
             }
             // Convert the LocalDateTime to a ZonedDateTime using the provided timeZone
             ZonedDateTime dateTime = localDateTime.atZone(timeZone);
 
             ObjectMapper objectMapper = new ObjectMapper();
             ObjectNode exclusionsJson = objectMapper.createObjectNode();
-            Pattern weekendsPattern = Pattern.compile("- Исключить СБ и ВС");
+            Pattern weekendsPattern = Pattern.compile("- Exclude Sat and Sun");
             Matcher weekendsMatcher = weekendsPattern.matcher(exclusionsText);
             exclusionsJson.put("weekends", weekendsMatcher.find());
             Pattern skipDaysPattern = Pattern.compile("\\* (\\d{4}-\\d{2}-\\d{2}) \\(every (\\d+) days\\)");
@@ -62,7 +62,7 @@ public class BotUtils {
             notification.setDatetimexcluded(exclusionsJson);
             return new ParseResult(notification, null);
         } else {
-            return new ParseResult(null, "Пожалуйста, проверьте соответствие шаблону.");
+            return new ParseResult(null, "Please check the template.");
         }
     }
 
