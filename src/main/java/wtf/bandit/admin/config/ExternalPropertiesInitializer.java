@@ -1,4 +1,4 @@
-package com.example.telegramdailybot.config;
+package wtf.bandit.admin.config;
 
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;

@@ -1,12 +1,12 @@
-package com.example.telegramdailybot;
+package wtf.bandit.admin;
 
 
-import com.example.telegramdailybot.config.TelegramDailyBotProperties;
-import com.example.telegramdailybot.controller.ChatManagementController;
-import com.example.telegramdailybot.controller.NotificationManagementController;
-import com.example.telegramdailybot.controller.UserManagementController;
-import com.example.telegramdailybot.model.UserActionState;
-import com.example.telegramdailybot.service.ChatGPT3Service;
+import wtf.bandit.admin.config.TelegramDailyBotProperties;
+import wtf.bandit.admin.controller.ChatManagementController;
+import wtf.bandit.admin.controller.NotificationManagementController;
+import wtf.bandit.admin.controller.UserManagementController;
+import wtf.bandit.admin.model.UserActionState;
+import wtf.bandit.admin.service.ChatGPT3Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +21,8 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static wtf.bandit.admin.model.UserActionState.*;
 
 
 @Component
@@ -201,7 +203,7 @@ public class TelegramDailyBot extends TelegramLongPollingBot {
 
         Long userId = message.getFrom().getId();
 
-        userActionStates.put(userId, UserActionState.WAITING_FOR_CHATGPT3_QUERY);
+        userActionStates.put(userId, WAITING_FOR_CHATGPT3_QUERY);
 
         sendChatMessage(chatId, "Write your question to ChatGPT3");
     }

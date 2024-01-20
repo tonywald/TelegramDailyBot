@@ -1,13 +1,13 @@
-package com.example.telegramdailybot.service;
+package wtf.bandit.admin.service;
 
-import com.example.telegramdailybot.TelegramDailyBot;
-import com.example.telegramdailybot.config.TelegramDailyBotProperties;
-import com.example.telegramdailybot.controller.ChatManagementController;
-import com.example.telegramdailybot.controller.NotificationManagementController;
-import com.example.telegramdailybot.controller.UserManagementController;
-import com.example.telegramdailybot.model.Chat;
-import com.example.telegramdailybot.model.Notification;
-import com.example.telegramdailybot.model.User;
+import wtf.bandit.admin.TelegramDailyBot;
+import wtf.bandit.admin.config.TelegramDailyBotProperties;
+import wtf.bandit.admin.controller.ChatManagementController;
+import wtf.bandit.admin.controller.NotificationManagementController;
+import wtf.bandit.admin.controller.UserManagementController;
+import wtf.bandit.admin.model.Chat;
+import wtf.bandit.admin.model.Notification;
+import wtf.bandit.admin.model.User;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;

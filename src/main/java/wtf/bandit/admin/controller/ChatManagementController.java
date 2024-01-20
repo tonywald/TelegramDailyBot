@@ -1,9 +1,9 @@
-package com.example.telegramdailybot.controller;
+package wtf.bandit.admin.controller;
 
-import com.example.telegramdailybot.model.Chat;
-import com.example.telegramdailybot.model.UserActionState;
-import com.example.telegramdailybot.service.ChatService;
-import com.example.telegramdailybot.util.BotUtils;
+import wtf.bandit.admin.model.Chat;
+import wtf.bandit.admin.model.UserActionState;
+import wtf.bandit.admin.service.ChatService;
+import wtf.bandit.admin.util.BotUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;

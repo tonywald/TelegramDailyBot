@@ -1,7 +1,7 @@
-package com.example.telegramdailybot.util;
+package wtf.bandit.admin.util;
 
-import com.example.telegramdailybot.model.Notification;
-import com.example.telegramdailybot.model.ParseResult;
+import wtf.bandit.admin.model.Notification;
+import wtf.bandit.admin.model.ParseResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;

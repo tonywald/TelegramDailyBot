@@ -1,7 +1,7 @@
-package com.example.telegramdailybot.service;
+package wtf.bandit.admin.service;
 
-import com.example.telegramdailybot.model.Chat;
-import com.example.telegramdailybot.repository.ChatRepository;
+import wtf.bandit.admin.model.Chat;
+import wtf.bandit.admin.repository.ChatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

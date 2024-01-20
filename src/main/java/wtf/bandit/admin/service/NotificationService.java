@@ -1,10 +1,10 @@
-package com.example.telegramdailybot.service;
+package wtf.bandit.admin.service;
 
-import com.example.telegramdailybot.config.TelegramDailyBotProperties;
-import com.example.telegramdailybot.model.Notification;
-import com.example.telegramdailybot.model.ParseResult;
-import com.example.telegramdailybot.repository.NotificationRepository;
-import com.example.telegramdailybot.util.BotUtils;
+import wtf.bandit.admin.config.TelegramDailyBotProperties;
+import wtf.bandit.admin.model.Notification;
+import wtf.bandit.admin.model.ParseResult;
+import wtf.bandit.admin.repository.NotificationRepository;
+import wtf.bandit.admin.util.BotUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.springframework.beans.factory.annotation.Autowired;

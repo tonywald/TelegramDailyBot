@@ -33,7 +33,7 @@ hs_err_pid*
 shelf/
 out/
 logs/
-src/main/resources/application.properties
+target/application.properties
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
